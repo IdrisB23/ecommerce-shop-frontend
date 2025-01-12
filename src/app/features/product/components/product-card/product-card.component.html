@@ -1,0 +1,28 @@
+<div class="card">
+  @if(productImgSrc.length > 0){
+    <img
+      [src]="productImgSrc[0]"
+      alt="{{ product.name }}"
+      class="card-img-top"
+      [height]="imgDimension"
+      [width]="imgDimension"
+    />
+  }
+  @else {
+    <img
+      [src]="defaultImage"
+      alt="Default Image"
+      class="card-img-top"
+      [height]="imgDimension"
+      [width]="imgDimension"
+    />
+  }
+  
+    <div class="card-body">
+      <h5 class="card-title">{{ product.name }}</h5>
+      <p class="card-text">
+        Brand: {{ product.brand }}<br />
+        Price: ${{ product.price }}
+      </p>
+    </div>
+  </div>
