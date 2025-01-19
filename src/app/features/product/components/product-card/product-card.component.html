@@ -1,28 +1,32 @@
-<div class="card">
+<mat-card class="" appearance="outlined">
+  <mat-card-header>
+    <!--div mat-card-avatar class=""></div-->
+    <mat-card-title>{{ product.name }}</mat-card-title>
+    <mat-card-subtitle>Brand: {{ product.brand }}</mat-card-subtitle>
+  </mat-card-header>
   @if(productImgSrc.length > 0){
-    <img
-      [src]="productImgSrc[0]"
-      alt="{{ product.name }}"
-      class="card-img-top"
-      [height]="imgDimension"
-      [width]="imgDimension"
-    />
+    <img mat-card-image 
+    [src]="productImgSrc[0]" 
+    alt="image of product: {{ product.name }}"
+    [height]="imgDimension"
+    [width]="imgDimension"/>
   }
   @else {
-    <img
-      [src]="defaultImage"
-      alt="Default Image"
-      class="card-img-top"
-      [height]="imgDimension"
-      [width]="imgDimension"
-    />
+    <img mat-card-image 
+    [src]="defaultImage" 
+    alt="No image for product: {{ product.name }}"
+    [height]="imgDimension"
+    [width]="imgDimension">
   }
-  
-    <div class="card-body">
-      <h5 class="card-title">{{ product.name }}</h5>
-      <p class="card-text">
-        Brand: {{ product.brand }}<br />
-        Price: ${{ product.price }}
-      </p>
-    </div>
-  </div>
+  <mat-card-content>
+    <p class="mat-typography">
+      Price: {{ product.price }}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <app-add-to-cart-button
+      [productId]="product.id"
+      (itemAdded)="handleAddToCart($event)" class="margin-top-5rem">
+    </app-add-to-cart-button>
+  </mat-card-actions>
+</mat-card>

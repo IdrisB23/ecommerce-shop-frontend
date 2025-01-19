@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Product } from '../../models/product.interface';
 import { ProductService } from '../../services/product.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { AddToCartButtonComponent } from '../../../cart/components/add-to-cart-button/add-to-cart-button.component';
-import { CartService } from '../../../cart/services/cart.service';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-product-list',
-  imports: [ProductCardComponent, AddToCartButtonComponent],
+  imports: [ProductCardComponent, MatGridListModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit {
   allProducts: Product[] = [];
+  gridColumns: string = '1';
 
-  constructor(private productService: ProductService, private cartService: CartService) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-
+    this.updateGridColumns(window.innerWidth);
+    // fetch all products from the backend
     this.productService.getAllProducts().subscribe((response) => {
       console.log('Response from API:', response);
       this.allProducts = response.data;
@@ -27,14 +28,20 @@ export class ProductListComponent implements OnInit {
     console.log('Immediately after subscribing, this.allProducts::', this.allProducts);
   }
 
-  handleAddToCart(productId: number): void {
-    this.cartService.addProductToCart(productId.toString()).subscribe({
-      next: () => {
-        alert('Item added to cart successfully!');
-      },
-      error: (err) => {
-        console.error('Error adding to cart:', err);
-      }
-    });
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updateGridColumns(event.target.innerWidth);
+  }
+
+  private updateGridColumns(width: number) {
+    if (width > 1300) {
+      this.gridColumns = '4'; // 4 columns for large screens
+    } else if (width > 950) {
+      this.gridColumns = '3'; // 3 columns for tablets
+    } else if (width > 635) {
+      this.gridColumns = '2'; // 2 columns for small devices
+    } else {
+      this.gridColumns = '1'; // 1 column for phones
+    }
   }
 }

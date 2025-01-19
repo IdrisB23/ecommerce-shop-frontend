@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-add-to-cart-button',
-  imports: [],
-  template: `<button class="btn-primary" (click)="addToCart()">Add to Cart</button>`
+  imports: [MatButtonModule],
+  template: `<button mat-button (click)="addToCart()">Add to Cart</button>`
 })
 export class AddToCartButtonComponent {
   @Input() productId!: number;
